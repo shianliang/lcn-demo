@@ -1,0 +1,44 @@
+server:
+  port: 80
+feign:
+  hystrix:
+    enabled: true
+eureka:
+  client:
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/
+    instance:
+      instance-id: springcloud-tx-client
+      prefer-ip-address: true     #访问路径可以显示IP地址
+spring:
+  application:
+    name: springcloud-tx-client
+  datasource:
+    driver-class-name: org.gjt.mm.mysql.Driver              # mysql驱动包
+    url: jdbc:mysql://localhost:3306/demo_tx_bank01              # 数据库名称
+    username: root
+    password:
+    dbcp2:
+      min-idle: 5                                           # 数据库连接池的最小维持连接数
+      initial-size: 5                                       # 初始化连接数
+      max-total: 5                                          # 最大连接数
+      max-wait-millis: 200                                  # 等待连接获取的最大超时时间
+
+#txmanager地址
+tm:
+  manager:
+    url: http://127.0.0.1:8899/tx/manager/
+logging:
+  level:
+    com:
+      codingapi: debug
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+          strategy: SEMAPHORE
